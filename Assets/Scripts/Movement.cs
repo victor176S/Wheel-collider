@@ -15,6 +15,8 @@ public class Movement : MonoBehaviour
 
     private Animator animator;
 
+    public GameObject ruedas;
+
     public Rigidbody rb;
 
     [SerializeField] private float velocidad;
@@ -36,7 +38,7 @@ public class Movement : MonoBehaviour
     }
     void Start()
     {
-        animator = this.gameObject.GetComponent<Animator>();
+        ruedas = this.gameObject.transform.GetChild(1).GetChild(1).gameObject;
 
         rb = this.gameObject.GetComponent<Rigidbody>();
 
@@ -61,7 +63,7 @@ public class Movement : MonoBehaviour
         
     }
 
-    void OnCollisionStay(Collision collision)
+    /*void OnCollisionStay(Collision collision)
     {
 
         if (collision.gameObject.CompareTag("Suelo"))
@@ -77,10 +79,31 @@ public class Movement : MonoBehaviour
         {
             enSuelo = false;
         }
-    }
+    }*/
 
     private void Movimiento()
     {
+
+        if (controls.SpaceM)
+        {
+            ruedas.transform.GetChild(0).gameObject.GetComponent<WheelCollider>().brakeTorque = rb.mass * 10000 * velocidad;
+            ruedas.transform.GetChild(1).gameObject.GetComponent<WheelCollider>().brakeTorque = rb.mass * 10000 * velocidad;
+            ruedas.transform.GetChild(2).gameObject.GetComponent<WheelCollider>().brakeTorque = rb.mass * 10000 * velocidad;
+            ruedas.transform.GetChild(3).gameObject.GetComponent<WheelCollider>().brakeTorque = rb.mass * 10000 * velocidad;
+
+            ruedas.transform.GetChild(0).gameObject.GetComponent<WheelCollider>().motorTorque = 0;
+            ruedas.transform.GetChild(1).gameObject.GetComponent<WheelCollider>().motorTorque = 0;
+            ruedas.transform.GetChild(2).gameObject.GetComponent<WheelCollider>().motorTorque = 0;
+            ruedas.transform.GetChild(3).gameObject.GetComponent<WheelCollider>().motorTorque = 0;
+        }
+        else
+        {
+            ruedas.transform.GetChild(0).gameObject.GetComponent<WheelCollider>().brakeTorque = 0;
+            ruedas.transform.GetChild(1).gameObject.GetComponent<WheelCollider>().brakeTorque = 0;
+            ruedas.transform.GetChild(2).gameObject.GetComponent<WheelCollider>().brakeTorque = 0;
+            ruedas.transform.GetChild(3).gameObject.GetComponent<WheelCollider>().brakeTorque = 0;
+        }
+
         if (controls.ShiftM)
         {
             velocidad = velocidadBase * 1.5f;
@@ -92,22 +115,28 @@ public class Movement : MonoBehaviour
 
         if (controls.AM)
         {
-            rb.AddForce(-transform.right * velocidad, ForceMode.VelocityChange);
+           
         }
 
         if (controls.WM)
         {
-            rb.AddForce(transform.forward * velocidad, ForceMode.VelocityChange);
+            ruedas.transform.GetChild(0).gameObject.GetComponent<WheelCollider>().motorTorque = rb.mass * velocidad * 1000;
+            ruedas.transform.GetChild(1).gameObject.GetComponent<WheelCollider>().motorTorque = rb.mass * velocidad * 1000;
+            ruedas.transform.GetChild(2).gameObject.GetComponent<WheelCollider>().motorTorque = rb.mass * velocidad * 1000;
+            ruedas.transform.GetChild(3).gameObject.GetComponent<WheelCollider>().motorTorque = rb.mass * velocidad * 1000;
         }
 
         if (controls.SM)
         {
-            rb.AddForce(-transform.forward * velocidad, ForceMode.VelocityChange);
+            ruedas.transform.GetChild(0).gameObject.GetComponent<WheelCollider>().motorTorque = -rb.mass * velocidad * 1000;
+            ruedas.transform.GetChild(1).gameObject.GetComponent<WheelCollider>().motorTorque = -rb.mass * velocidad * 1000;
+            ruedas.transform.GetChild(2).gameObject.GetComponent<WheelCollider>().motorTorque = -rb.mass * velocidad * 1000;
+            ruedas.transform.GetChild(3).gameObject.GetComponent<WheelCollider>().motorTorque = -rb.mass * velocidad * 1000;
         }
 
         if (controls.DM)
         {
-            rb.AddForce(transform.right * velocidad, ForceMode.VelocityChange);
+            
         }
 
         if (rb.linearVelocity.magnitude > velocidad)
@@ -116,13 +145,21 @@ public class Movement : MonoBehaviour
             vel.y = rb.linearVelocity.y;
             rb.linearVelocity = vel;
         }
+
+        if (!Input.anyKey)
+        {
+            ruedas.transform.GetChild(0).gameObject.GetComponent<WheelCollider>().motorTorque = 0;
+            ruedas.transform.GetChild(1).gameObject.GetComponent<WheelCollider>().motorTorque = 0;
+            ruedas.transform.GetChild(2).gameObject.GetComponent<WheelCollider>().motorTorque = 0;
+            ruedas.transform.GetChild(3).gameObject.GetComponent<WheelCollider>().motorTorque = 0;
+        }
     }
 
     private void CameraMov()
     {
 
         //Movimiento ratón
-        this.gameObject.transform.GetChild(0).gameObject.transform.localRotation = Quaternion.Euler(controls.xRotation, controls.yRotation, 0);
+        this.gameObject.transform.GetChild(2).gameObject.transform.localRotation = Quaternion.Euler(controls.xRotation, controls.yRotation, 0);
 
     }
 }
