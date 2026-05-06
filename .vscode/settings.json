@@ -67,5 +67,5 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "Wheel-collider.slnx"
+    "dotnet.defaultSolution": "Wheel collider.slnx"
 }

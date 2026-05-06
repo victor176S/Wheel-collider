@@ -115,7 +115,8 @@ public class Movement : MonoBehaviour
 
         if (controls.AM)
         {
-           
+            ruedas.transform.GetChild(0).gameObject.GetComponent<WheelCollider>().steerAngle = -60;
+            ruedas.transform.GetChild(1).gameObject.GetComponent<WheelCollider>().steerAngle = -60;
         }
 
         if (controls.WM)
@@ -136,7 +137,8 @@ public class Movement : MonoBehaviour
 
         if (controls.DM)
         {
-            
+            ruedas.transform.GetChild(0).gameObject.GetComponent<WheelCollider>().steerAngle = 60;
+            ruedas.transform.GetChild(1).gameObject.GetComponent<WheelCollider>().steerAngle = 60;
         }
 
         if (rb.linearVelocity.magnitude > velocidad)
